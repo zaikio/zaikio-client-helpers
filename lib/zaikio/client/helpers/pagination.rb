@@ -97,7 +97,7 @@ module Zaikio::Client::Helpers
         find_some.each(&block)
         return if !supports_pagination? || last_page?
 
-        puts "There are #{total_count} pages, I will load more pages automatically" if first_page?
+        puts "There are #{total_pages} pages, I will load more pages automatically" if first_page?
         clone.page(next_page).each(&block)
       end
 
