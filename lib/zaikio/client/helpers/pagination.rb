@@ -93,6 +93,10 @@ module Zaikio::Client::Helpers
           current_page >= total_pages
         end
 
+        def supports_pagination?
+          current_page.present?
+        end
+
         # Unlike the default implementation in Spyke, this version of #each is recursive
         # and will repeatedly paginate through the remote API until it runs out of
         # records.
@@ -105,13 +109,15 @@ module Zaikio::Client::Helpers
           return to_enum(:each) unless block_given?
 
           find_some.each(&block)
-          return if last_page?
+          return if !supports_pagination? || last_page?
 
           puts "There are #{total_count} pages, I will load more pages automatically" if first_page?
           clone.page(next_page).each(&block)
         end
 
         def clone
+          # We use cloning when fetching a second page using the same scope/query, however
+          # we want to clear any loaded records from @find_some before doing so.
           super.tap { |obj| obj.instance_variable_set(:@find_some, nil) }
         end
       end

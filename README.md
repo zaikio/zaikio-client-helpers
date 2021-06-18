@@ -79,3 +79,6 @@ to call `each` or `to_a` to materialize the records):
 ```ruby
 Model.all.lazy.take(2).map(&:id).to_a
 ```
+
+Note that if the endpoint doesn't support pagination (i.e. doesn't return a `Current-Page`
+header), pagination is automatically disabled.
