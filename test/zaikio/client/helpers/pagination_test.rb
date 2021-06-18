@@ -36,9 +36,9 @@ class Zaikio::Client::Helpers::Pagination::FaradayMiddlewareTest < ActiveSupport
   end
 end
 
-class Zaikio::Client::Helpers::Pagination::SpykeTest < ActiveSupport::TestCase
+class Zaikio::Client::Helpers::PaginationTest < ActiveSupport::TestCase
   class User < Spyke::Base
-    include Zaikio::Client::Helpers::Pagination::Spyke
+    include Zaikio::Client::Helpers::Pagination
   end
 
   def setup

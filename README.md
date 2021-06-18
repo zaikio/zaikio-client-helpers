@@ -62,7 +62,7 @@ end
 ```
 
 If you aren't inheriting `Zaikio::Client::Model`, you should mixin our pagination library
-like so: `include Zaikio::Client::Helpers::Pagination::Spyke`.
+like so: `include Zaikio::Client::Helpers::Pagination`.
 
 The library works by overriding the `#all` method on a relation, so it will keep fetching
 pages from the remote API until there are none left:
