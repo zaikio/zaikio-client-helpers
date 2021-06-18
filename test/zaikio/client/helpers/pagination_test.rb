@@ -36,9 +36,9 @@ class Zaikio::Client::Helpers::Pagination::FaradayMiddlewareTest < ActiveSupport
   end
 end
 
-class Zaikio::Client::Helpers::Pagination::SpykeTest < ActiveSupport::TestCase
+class Zaikio::Client::Helpers::PaginationTest < ActiveSupport::TestCase
   class User < Spyke::Base
-    include Zaikio::Client::Helpers::Pagination::Spyke
+    include Zaikio::Client::Helpers::Pagination
   end
 
   def setup
@@ -125,6 +125,7 @@ class Zaikio::Client::Helpers::Pagination::SpykeTest < ActiveSupport::TestCase
     })
 
     relation = User.all
+    assert relation.supports_pagination?
     assert relation.first_page?
     refute relation.last_page?
     assert_equal 2, relation.next_page
@@ -139,7 +140,17 @@ class Zaikio::Client::Helpers::Pagination::SpykeTest < ActiveSupport::TestCase
     })
 
     relation = User.all
+    assert relation.supports_pagination?
     refute relation.first_page?
     assert relation.last_page?
+  end
+
+  test "does not attempt to paginate if missing pagination headers" do
+    stub_request(:get, "https://api/users").to_return(body: '[{"id":1}]', headers: @headers)
+
+    relation = User.all
+    assert_equal [1], relation.map(&:id)
+
+    refute relation.supports_pagination?
   end
 end
