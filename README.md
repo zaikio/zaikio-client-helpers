@@ -24,6 +24,14 @@ spec.add_dependency "zaikio-client-helpers"
 require "zaikio-client-helpers"
 ```
 
+3. Extend the base class for your models:
+
+```ruby
+class User < Zaikio::Client::Model
+  # ...
+end
+```
+
 ## Parsing API responses
 
 Spyke needs a couple of extra things in addition to JSON parsing, so this library exposes
@@ -53,17 +61,10 @@ Faraday.new do |f|
 end
 ```
 
-Then, in our classes which use pagination, we need to add this Spyke module:
+If you aren't inheriting `Zaikio::Client::Model`, you should mixin our pagination library
+like so: `include Zaikio::Client::Helpers::Pagination::Spyke`.
 
-```ruby
-class Model < Spyke::Base
-  include Zaikio::Client::Helpers::Pagination::Spyke
-end
-```
-
-> It is also safe to include this module just in your base class for all models to share.
-
-The module works by overriding the `#all` method on a relation, so it will keep fetching
+The library works by overriding the `#all` method on a relation, so it will keep fetching
 pages from the remote API until there are none left:
 
 ```ruby
