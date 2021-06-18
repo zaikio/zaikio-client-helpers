@@ -1,0 +1,66 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:3.0.1
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "zaikio-client-helpers.gemspec" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            bundle exec rake test
+
+  publish:
+    docker:
+      - image: circleci/ruby:3.0.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Build package
+          command: gem build zaikio-client-helpers.gemspec
+      - run:
+          name: Push package
+          command: |
+            VERSION=$(ruby -r "./lib/zaikio/client/helpers/version.rb" -e "print Zaikio::Client::Helpers::VERSION")
+            gem push zaikio-client-helpers-${VERSION}.gem
+
+
+workflows:
+  default:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+      - publish:
+          context:
+            - rubygems-push
+          requires: [test]
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
