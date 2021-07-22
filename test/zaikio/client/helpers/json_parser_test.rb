@@ -40,13 +40,18 @@ class Zaikio::Client::Helpers::JSONParserTest < ActiveSupport::TestCase
       @connection.get("/")
     end
     assert_equal "Status: 503, URL: https://parse/, body: Service unavailable", exception.message
+    assert_equal 503, exception.status
+    assert_equal URI("https://parse/"), exception.url
+    assert_equal "Service unavailable", exception.body
   end
 
   test "returns 404 if resource not found" do
     stub_request(:get, "https://parse/").to_return(status: 404)
 
-    assert_raises(Spyke::ResourceNotFound) do
+    exception = assert_raises(Spyke::ResourceNotFound) do
       @connection.get("/")
     end
+
+    assert_equal URI("https://parse/"), exception.url
   end
 end
