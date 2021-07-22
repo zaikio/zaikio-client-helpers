@@ -40,13 +40,37 @@ class Zaikio::Client::Helpers::JSONParserTest < ActiveSupport::TestCase
       @connection.get("/")
     end
     assert_equal "Status: 503, URL: https://parse/, body: Service unavailable", exception.message
+    assert_equal 503, exception.status
+    assert_equal URI("https://parse/"), exception.url
+    assert_equal "Service unavailable", exception.body
+  end
+
+  test "when server returns HTTP 422" do
+    stub_request(:patch, "https://parse/").to_return(status: 422, body: %({"errors":[]}))
+
+    response = assert_nothing_raised do
+      @connection.patch("/")
+    end
+
+    assert_equal({:data=>{:errors=>[]}, :metadata=>{}, :errors=>[]}, response.body)
+  end
+
+  test "when server returns HTTP 429" do
+    stub_request(:get, "https://parse/").to_return(status: 429, body: "Rate limited")
+
+    exception = assert_raises(Zaikio::RateLimitedError) do
+      @connection.get("/")
+    end
+    assert_equal URI("https://parse/"), exception.url
   end
 
   test "returns 404 if resource not found" do
     stub_request(:get, "https://parse/").to_return(status: 404)
 
-    assert_raises(Spyke::ResourceNotFound) do
+    exception = assert_raises(Spyke::ResourceNotFound) do
       @connection.get("/")
     end
+
+    assert_equal URI("https://parse/"), exception.url
   end
 end
