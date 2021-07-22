@@ -1,6 +1,8 @@
 ## [Unreleased]
 
 - Add `Zaikio:Error` and allow setting arbitrary attributes on the exceptions
+- Add `Zaikio::RateLimitedError` when HTTP 429 occurs (note that this subclasses
+  `Zaikio::ConnectionError` so all existing error handling should continue to work).
 
 ## [0.1.1] - 2021-06-18
 

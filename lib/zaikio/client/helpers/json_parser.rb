@@ -4,11 +4,12 @@ require "multi_json"
 module Zaikio::Client::Helpers
   class JSONParser < Faraday::Response::Middleware
     def on_complete(env)
-      connection_error(env) unless /^(2\d\d)|422|404$/.match?(env.status.to_s)
-
-      raise Spyke::ResourceNotFound.new("Not found", url: env.url) if env.status.to_s == "404"
-
-      env.body = parse_body(env.body)
+      case env.status
+      when 404 then raise Spyke::ResourceNotFound.new(nil, url: env.url)
+      when 429 then raise Zaikio::RateLimitedError.new(nil, url: env.url)
+      when (200..299), 422 then env.body = parse_body(env.body)
+      else connection_error(env)
+      end
     end
 
     def connection_error(env)

@@ -11,8 +11,10 @@ module Zaikio
     end
   end
 
-  class ConnectionError < Zaikio::Error; end
   class ResourceNotFound < Zaikio::Error; end
+
+  class ConnectionError < Zaikio::Error; end
+  class RateLimitedError < ConnectionError; end
 end
 
 require "spyke"
