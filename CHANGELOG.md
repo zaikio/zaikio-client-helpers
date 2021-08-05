@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Fixed `with_fallback` from spyke by aliasing the correct error classes
+
 ## [0.2.0] - 2021-07-22
 
 - Add `Zaikio:Error` and allow setting arbitrary attributes on the exceptions
