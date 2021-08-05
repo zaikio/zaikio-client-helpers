@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.2.1] - 2021-08-05
+
 - Fixed `with_fallback` from spyke by aliasing the correct error classes
 
 ## [0.2.0] - 2021-07-22
