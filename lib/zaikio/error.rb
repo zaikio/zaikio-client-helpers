@@ -26,6 +26,6 @@ module Spyke
     remove_const("ResourceNotFound")
   end
 
-  ConnectionError = Class.new Zaikio::ConnectionError
-  ResourceNotFound = Class.new Zaikio::ResourceNotFound
+  ConnectionError = Zaikio::ConnectionError
+  ResourceNotFound = Zaikio::ResourceNotFound
 end
