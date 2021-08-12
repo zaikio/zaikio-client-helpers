@@ -34,6 +34,17 @@ class Zaikio::Client::Helpers::Pagination::FaradayMiddlewareTest < ActiveSupport
     assert_nil response.env[:pagination][:total_pages]
     assert_nil response.env[:pagination][:current_page]
   end
+
+  test "it does not break if non-JSON response" do
+    stub_request(:get, "https://empty")
+      .to_return(status: 200, headers: {"Content-Type" => "text/html"}, body: "<html />")
+
+    response = @connection.get("/")
+
+    assert_nil response.env[:pagination][:total_count]
+    assert_nil response.env[:pagination][:total_pages]
+    assert_nil response.env[:pagination][:current_page]
+  end
 end
 
 class Zaikio::Client::Helpers::PaginationTest < ActiveSupport::TestCase
@@ -150,6 +161,16 @@ class Zaikio::Client::Helpers::PaginationTest < ActiveSupport::TestCase
 
     relation = User.all
     assert_equal [1], relation.map(&:id)
+
+    refute relation.supports_pagination?
+  end
+
+  test "does not attempt to paginate if unexpected content type" do
+    stub_request(:get, "https://api/users")
+      .to_return(body: '<html>', headers: { "Content-Type" => "text/plain"})
+
+    relation = User.all
+    assert_equal [], relation.map(&:id)
 
     refute relation.supports_pagination?
   end

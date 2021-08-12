@@ -16,6 +16,8 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
 
+  spec.required_ruby_version = '>= 2.3'
+
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md",
                    "CHANGELOG.md"]
   spec.require_paths = ["lib"]

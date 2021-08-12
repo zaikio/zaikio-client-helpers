@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.2] - 2021-08-12
+
+- Attempt to fix `NoMethodError` when looking for pagination headers
+
 ## [0.2.1] - 2021-08-05
 
 - Fixed `with_fallback` from spyke by aliasing the correct error classes
