@@ -63,7 +63,7 @@ module Zaikio::Client::Helpers
     class Relation < Spyke::Relation
       HEADERS.each_key do |symbol|
         define_method(symbol) do
-          find_some.metadata[METADATA_KEY][symbol]
+          find_some.metadata.dig(METADATA_KEY, symbol)
         end
       end
 
