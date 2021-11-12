@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zaikio-client-helpers (0.2.2)
+    zaikio-client-helpers (0.2.3)
       faraday
       multi_json
       spyke
