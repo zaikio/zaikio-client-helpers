@@ -76,7 +76,11 @@ module Zaikio::Client::Helpers
       end
 
       def last_page?
-        current_page >= total_pages
+        if total_pages.nil?
+          find_some.empty?
+        else
+          current_page >= total_pages
+        end
       end
 
       def supports_pagination?
