@@ -165,6 +165,20 @@ class Zaikio::Client::Helpers::PaginationTest < ActiveSupport::TestCase
     refute relation.supports_pagination?
   end
 
+  test "will attempt to paginate when working with uncountable responses" do
+    stub_request(:get, "https://api/users").to_return(body: '[{"id":1}]', headers: {
+      "Current-Page" => 1
+    })
+    stub_request(:get, "https://api/users?page=2").to_return(body: '[]', headers: {
+      "Current-Page" => 2
+    })
+
+    relation = User.all
+    assert_equal [1], relation.map(&:id)
+
+    assert relation.supports_pagination?
+  end
+
   test "does not attempt to paginate if unexpected content type" do
     stub_request(:get, "https://api/users")
       .to_return(body: '<html>', headers: { "Content-Type" => "text/plain"})

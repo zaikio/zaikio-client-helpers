@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.3] - 2021-11-12
+
+- Handle "uncountable" responses (i.e. those without a Total-Count or Total-Pages header)
+
 ## [0.2.2] - 2021-08-12
 
 - Attempt to fix `NoMethodError` when looking for pagination headers
