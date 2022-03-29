@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.4] - 2022-03-29
+
+- Add support for Faraday 2.x
+
 ## [0.2.3] - 2021-11-12
 
 - Handle "uncountable" responses (i.e. those without a Total-Count or Total-Pages header)

@@ -2,7 +2,13 @@ require "faraday"
 require "multi_json"
 
 module Zaikio::Client::Helpers
-  class JSONParser < Faraday::Response::Middleware
+  superclass = if Gem.loaded_specs["faraday"].version >= Gem::Version.new("2.0")
+    Faraday::Middleware
+  else
+    Faraday::Response::Middleware
+  end
+
+  JSONParser = Class.new(superclass) do
     def on_complete(env)
       case env.status
       when 404 then raise Spyke::ResourceNotFound.new(nil, url: env.url)

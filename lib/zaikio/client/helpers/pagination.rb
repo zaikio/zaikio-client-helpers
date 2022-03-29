@@ -11,6 +11,12 @@ module Zaikio::Client::Helpers
 
     METADATA_KEY = :pagination
 
+    superclass = if Gem.loaded_specs["faraday"].version >= Gem::Version.new("2.0")
+      Faraday::Middleware
+    else
+      Faraday::Response::Middleware
+    end
+
     # Faraday Middleware for extracting any pagination headers into the a top-level
     # :metadata hash, or the env hash for non-JSON responses.
     #
@@ -22,7 +28,7 @@ module Zaikio::Client::Helpers
     #   response = conn.get("/")
     #   response.env[METADATA_KEY]
     #   #=> {total_count: 4, total_pages: 1, current_page: 1}
-    class FaradayMiddleware < Faraday::Response::Middleware
+    FaradayMiddleware = Class.new(superclass) do
       def on_complete(env)
         @env = env
 
