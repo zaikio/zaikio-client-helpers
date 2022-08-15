@@ -9,7 +9,7 @@ module Zaikio
         attr_writer :logger
 
         def self.hosts
-          raise "implement me"
+          raise NotImplementedError
         end
 
         def initialize
