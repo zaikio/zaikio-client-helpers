@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.3.0] - 2022-08-15
+
 - Add `Zaikio::Client::Helpers::AuthorizationMiddleware` and `Zaikio::Client.with_token` to pass down bearer token to multiple clients (e.g. hub + procurement) at the same time
 - Add `Zaikio::Client::Helpers::Configuration` as an abstract configuration class
 - Add `Zaikio::Client.create_connection`
