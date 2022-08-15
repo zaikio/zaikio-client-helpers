@@ -1,22 +1,19 @@
 require "faraday"
-require "concurrent"
 
 module Zaikio
   module Client
     module Helpers
       class AuthorizationMiddleware < Faraday::Middleware
         def self.token
-          @token ||= Concurrent::ThreadLocalVar.new { nil }
-          @token.value
+          Thread.current[:zaikio_client_access_token]
         end
 
         def self.token=(value)
-          @token ||= Concurrent::ThreadLocalVar.new { nil }
-          @token.value = value
+          Thread.current[:zaikio_client_access_token] = value
         end
 
         def self.reset_token
-          self.token = nil
+          Thread.current[:zaikio_client_access_token] = nil
         end
 
         def call(request_env)
