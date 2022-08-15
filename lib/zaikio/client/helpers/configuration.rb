@@ -29,7 +29,7 @@ module Zaikio
 
         def host_for(environment)
           self.class.hosts.fetch(environment) do
-            raise StandardError.new, "Invalid Zaikio::Client environment '#{environment}'"
+            raise "Invalid Zaikio::Client environment '#{environment}'"
           end
         end
       end
