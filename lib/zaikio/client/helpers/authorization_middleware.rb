@@ -1,5 +1,4 @@
 require "faraday"
-require "jwt"
 require "concurrent"
 
 module Zaikio
