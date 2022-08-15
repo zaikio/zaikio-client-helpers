@@ -23,8 +23,7 @@ module Zaikio
         def call(request_env)
           request_env[:request_headers]["Authorization"] = "Bearer #{self.class.token}" if self.class.token
 
-          @app.call(request_env).on_complete do |response_env|
-          end
+          @app.call(request_env)
         end
       end
     end
