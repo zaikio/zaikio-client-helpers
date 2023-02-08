@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Add a default timeout for Faraday connection of 5 seconds.
+
 ## [0.3.0] - 2022-08-15
 
 - Add `Zaikio::Client::Helpers::AuthorizationMiddleware` and `Zaikio::Client.with_token` to pass down bearer token to multiple clients (e.g. hub + procurement) at the same time

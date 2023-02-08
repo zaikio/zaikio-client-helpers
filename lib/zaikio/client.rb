@@ -18,6 +18,7 @@ module Zaikio
       def create_connection(configuration)
         Faraday.new(url: configuration.host,
                                       ssl: { verify: configuration.environment != :test }) do |c|
+          c.options.timeout = 5
           c.request     :json
           c.response    :logger, configuration&.logger, headers: false
           c.use         Zaikio::Client::Helpers::Pagination::FaradayMiddleware
