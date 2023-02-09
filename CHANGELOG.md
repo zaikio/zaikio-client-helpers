@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.4.0] - 2023-02-09
 
 - Add a default read timeout for Faraday connection of 5 seconds, and open timeout of 1 second.
 
