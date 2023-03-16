@@ -15,8 +15,8 @@ class Zaikio::Client::Helpers::AuthorizationMiddlewareTest < ActiveSupport::Test
   end
 
   test "it sets the Authorization request header" do
-    stub_request(:get, "https://procurement.sandbox.zaikio.com/api/v2/resources?lang=en")
-    stub_request(:get, "https://procurement.sandbox.zaikio.com/api/v2/resources2?lang=en")
+    stub_request(:get, "https://procurement.sandbox.zaikio.com/api/v2/resources")
+    stub_request(:get, "https://procurement.sandbox.zaikio.com/api/v2/resources2")
 
     Zaikio::Client.with_token("oldtoken") do
       Zaikio::Client.with_token("mytoken") do
@@ -27,12 +27,12 @@ class Zaikio::Client::Helpers::AuthorizationMiddlewareTest < ActiveSupport::Test
     end
 
     assert_requested(
-      :get, "https://procurement.sandbox.zaikio.com/api/v2/resources?lang=en",
+      :get, "https://procurement.sandbox.zaikio.com/api/v2/resources",
       headers: { "Authorization" => "Bearer oldtoken" }
     )
 
     assert_requested(
-      :get, "https://procurement.sandbox.zaikio.com/api/v2/resources2?lang=en",
+      :get, "https://procurement.sandbox.zaikio.com/api/v2/resources2",
       headers: { "Authorization" => "Bearer mytoken" }
     )
   end

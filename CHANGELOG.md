@@ -1,4 +1,4 @@
-- Add new faraday middleware that automatically passes current `I18n.locale` to `lang` param
+- Add new faraday middleware that automatically passes current `I18n.locale` to `Accept-Language` header
 
 ## [0.4.0] - 2023-02-09
 
