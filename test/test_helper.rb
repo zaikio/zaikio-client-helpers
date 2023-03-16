@@ -19,3 +19,5 @@ VCR.configure do |config|
 end
 
 require "zaikio-client-helpers"
+
+I18n.available_locales = [:de, :en]
