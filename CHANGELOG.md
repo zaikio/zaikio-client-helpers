@@ -1,3 +1,5 @@
+## [0.5.0] - 2023-03-17
+
 - Add new faraday middleware that automatically passes current `I18n.locale` to `Accept-Language` header
 
 ## [0.4.0] - 2023-02-09
