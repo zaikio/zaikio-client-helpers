@@ -4,7 +4,7 @@ module Zaikio
   module Client
     module Helpers
       class Configuration
-        attr_accessor :host
+        attr_accessor :host, :disable_i18n
         attr_reader :environment
         attr_writer :logger
 

@@ -3,6 +3,7 @@ require "zaikio/client/helpers/json_parser"
 require "zaikio/client/helpers/pagination"
 require "zaikio/client/helpers/configuration"
 require "zaikio/client/helpers/authorization_middleware"
+require "zaikio/client/helpers/locale_middleware"
 
 module Zaikio
   module Client
@@ -25,6 +26,7 @@ module Zaikio
           c.use         Zaikio::Client::Helpers::Pagination::FaradayMiddleware
           c.use         Zaikio::Client::Helpers::JSONParser
           c.use         Zaikio::Client::Helpers::AuthorizationMiddleware
+          c.use         Zaikio::Client::Helpers::LocaleMiddleware, disable_i18n: configuration.disable_i18n
           c.adapter     Faraday.default_adapter
         end
       end
