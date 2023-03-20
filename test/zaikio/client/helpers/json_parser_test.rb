@@ -27,7 +27,7 @@ class Zaikio::Client::Helpers::JSONParserTest < ActiveSupport::TestCase
     response = @connection.get("/")
 
     assert_equal({
-      data: { errors: {uh: "oh"} },
+      data: {},
       metadata: {},
       errors: {uh: "oh"}
     }, response.body)
@@ -46,13 +46,23 @@ class Zaikio::Client::Helpers::JSONParserTest < ActiveSupport::TestCase
   end
 
   test "when server returns HTTP 422" do
-    stub_request(:patch, "https://parse/").to_return(status: 422, body: %({"errors":[]}))
+    stub_request(:patch, "https://parse/").to_return(status: 422, body: %({"errors":{}}))
 
     response = assert_nothing_raised do
       @connection.patch("/")
     end
 
-    assert_equal({:data=>{:errors=>[]}, :metadata=>{}, :errors=>[]}, response.body)
+    assert_equal({:data=>{}, :metadata=>{}, :errors=>{ base: ["unknown"] }}, response.body)
+  end
+
+  test "when server returns HTTP 422 with given error message" do
+    stub_request(:patch, "https://parse/").to_return(status: 422, body: %({"errors":{"base": ["error_message"]}}))
+
+    response = assert_nothing_raised do
+      @connection.patch("/")
+    end
+
+    assert_equal({:data=>{}, :metadata=>{}, :errors=>{ base: ["error_message"] }}, response.body)
   end
 
   test "when server returns HTTP 429" do

@@ -13,7 +13,7 @@ module Zaikio::Client::Helpers
       case env.status
       when 404 then raise Spyke::ResourceNotFound.new(nil, url: env.url)
       when 429 then raise Zaikio::RateLimitedError.new(nil, url: env.url)
-      when (200..299), 422 then env.body = parse_body(env.body)
+      when (200..299), 422 then env.body = parse_body(env.body, status: env.status)
       else connection_error(env)
       end
     end
@@ -27,12 +27,14 @@ module Zaikio::Client::Helpers
       )
     end
 
-    def parse_body(body)
+    def parse_body(body, status: 200)
       json = MultiJson.load(body, symbolize_keys: true)
+      errors = json.is_a?(Hash) ? json.delete(:errors) || {} : {}
+      errors = { base: ['unknown'] } if status == 422 && errors.empty?
       {
         data: json,
         metadata: {},
-        errors: json.is_a?(Hash) ? json[:errors] : {}
+        errors: errors
       }
     rescue MultiJson::ParseError
       {

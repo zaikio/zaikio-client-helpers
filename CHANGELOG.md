@@ -1,3 +1,6 @@
+- Remove errors from data hash
+- Do include base error if server responds with a 422 to see that an error happened
+
 ## [0.5.0] - 2023-03-17
 
 - Add new faraday middleware that automatically passes current `I18n.locale` to `Accept-Language` header
