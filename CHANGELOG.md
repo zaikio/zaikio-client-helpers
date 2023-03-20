@@ -1,3 +1,5 @@
+## [0.6.0] - 2023-03-20
+
 - Remove errors from data hash
 - Do include base error if server responds with a 422 to see that an error happened
 
